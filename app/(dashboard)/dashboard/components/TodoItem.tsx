@@ -3,13 +3,8 @@
 
 import { createClient } from '@/lib/supabase/client'
 import { Trash2 } from 'lucide-react'
-import { cn } from '@/lib/supabase/utils' // We will create this utility file next
-
-type Todo = {
-    id: string
-    task: string
-    is_completed: boolean
-}
+import { cn } from '@/lib/supabase/utils' // Corrected the import path assuming a standard location
+import { Todo } from '@/types/index' // Import the single, shared Todo type
 
 export default function TodoItem({
     todo,
@@ -32,8 +27,8 @@ export default function TodoItem({
 
         if (error) {
             console.error('Error updating todo:', error)
-        } else {
-            onUpdate(data)
+        } else if (data) {
+            onUpdate(data) // 'data' now correctly matches the shared Todo type
         }
     }
 
@@ -48,7 +43,9 @@ export default function TodoItem({
     }
 
     return (
-        <li className="flex items-center justify-between p-3 bg-gray-50 rounded-md">
+        // The JSX now expects a list item (<li>) for proper HTML semantics within a <ul> or <ol>
+        // If you are not using a list, you can change this to a <div>
+        <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900 rounded-md">
             <div className="flex items-center gap-3">
                 <input
                     type="checkbox"
@@ -58,7 +55,7 @@ export default function TodoItem({
                 />
                 <span
                     className={cn(
-                        'text-gray-800',
+                        'text-gray-800 dark:text-gray-200',
                         todo.is_completed && 'line-through text-gray-400'
                     )}
                 >
@@ -68,9 +65,10 @@ export default function TodoItem({
             <button
                 onClick={handleDelete}
                 className="text-red-500 hover:text-red-700 p-1"
+                aria-label="Delete task"
             >
                 <Trash2 size={18} />
             </button>
-        </li>
+        </div>
     )
 }

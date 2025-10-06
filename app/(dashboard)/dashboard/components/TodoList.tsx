@@ -5,14 +5,7 @@ import { useState, useMemo } from 'react'
 import AddTodo from './AddTodo'
 import TodoItem from './TodoItem'
 import { Button } from '@/components/ui/button'
-
-type Todo = {
-    id: string
-    user_id: string
-    task: string
-    is_completed: boolean
-    created_at: string
-}
+import { Todo } from '@/types/index' // Correctly import the shared Todo type
 
 type FilterStatus = 'all' | 'completed' | 'pending'
 

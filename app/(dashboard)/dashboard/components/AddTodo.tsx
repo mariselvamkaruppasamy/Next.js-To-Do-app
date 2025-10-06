@@ -1,16 +1,25 @@
 // app/(dashboard)/dashboard/components/AddTodo.tsx
 'use client'
 
-import { useState } from 'react'
+import { useState, FormEvent } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-export default function AddTodo({ onAdd }: { onAdd: (newTodo: any) => void }) {
+// Define a type for a single todo item to avoid using 'any'
+type Todo = {
+    id: string;
+    user_id: string;
+    task: string;
+    is_completed: boolean;
+    created_at: string;
+}
+
+export default function AddTodo({ onAdd }: { onAdd: (newTodo: Todo) => void }) {
     const [task, setTask] = useState('')
     const supabase = createClient()
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (task.trim().length === 0) return
 
